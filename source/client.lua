@@ -17,16 +17,16 @@ local Index = 1
 local b2 = nil
 local v2 = nil
 
-function OpenMenuShopItem(v) 
+function OpenMenuShopItem(v)
 
-	for a,b in pairs(v.Items) do
-		b.donttouch = {}
-		for i = 1, b.qtmax do
-			table.insert(b.donttouch, i)
-		end
-	end
+        for a,b in pairs(v.items) do
+                b.donttouch = {}
+                for i = 1, b.max do
+                        table.insert(b.donttouch, i)
+                end
+        end
 
-	local Main = RageUI.CreateMenu(v.NameMenu, v.DescriptionMenu, nil, nil, v.Directory, v.Banner)
+        local Main = RageUI.CreateMenu(v.menuTitle, v.menuDescription, nil, nil, v.directory, v.banner)
 
 	Main.Display.Header = true
 	Main.Closed = function()
@@ -45,13 +45,13 @@ function OpenMenuShopItem(v)
 
 			CreateThread(function()
 			while open do 
-			RageUI.IsVisible(Main, function()
+                        RageUI.IsVisible(Main, function()
 
-				for a,b in pairs(v.Items) do
-					RageUI.List(b.label..": ~"..v.ColorMenu.."~"..b.price * b.ListIndex.."~s~$", b.donttouch, b.ListIndex, nil, {Preview, LeftBadge = RageUI.BadgeStyle.Star}, true, {
+                                for a,b in pairs(v.items) do
+                                        RageUI.List(b.label..": ~"..v.color.."~"..b.price * b.index.."~s~$", b.donttouch, b.index, nil, {Preview, LeftBadge = RageUI.BadgeStyle.Star}, true, {
 			
-						onListChange = function(i, Item)
-							b.ListIndex = i;
+                                                onListChange = function(i, Item)
+                                                        b.index = i;
 						end,
 			
 						onSelected = function()
@@ -72,30 +72,30 @@ function OpenMenuShopItem(v)
 			if onPay == true then
 				RageUI.Line()
 
-				RageUI.List("Bezahlverfahren:", {"~"..v2.ColorMenu.."~Flüssig~s~", "~"..v2.ColorMenu.."~banque~s~", "~"..v2.ColorMenu.."~Schmutziges Geld~s~"}, Index, nil, {Preview}, true, {
+                                RageUI.List("Payment method:", {"~"..v2.color.."~Cash~s~", "~"..v2.color.."~Bank~s~", "~"..v2.color.."~Black Money~s~"}, Index, nil, {Preview}, true, {
 	
 					onListChange = function(i, Item)
 						Index = i;
 					end,
 
 					onActive = function()
-						if Index == 1 then
-							if not v.PayedMethode.Cash then
-								Index = Index + 1
-							end
-						end
+                                                if Index == 1 then
+                                                        if not v.payment.cash then
+                                                                Index = Index + 1
+                                                        end
+                                                end
 
-						if Index == 2 then
-							if not v.PayedMethode.Bank then
-								Index = Index + 1
-							end
-						end
+                                                if Index == 2 then
+                                                        if not v.payment.bank then
+                                                                Index = Index + 1
+                                                        end
+                                                end
 
-						if Index == 3 then
-							if not v.PayedMethode.BlackMoney then
-								Index = Index - 2
-							end
-						end
+                                                if Index == 3 then
+                                                        if not v.payment.black then
+                                                                Index = Index - 2
+                                                        end
+                                                end
 					end,
 		
 					onSelected = function()

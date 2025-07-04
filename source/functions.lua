@@ -1,77 +1,75 @@
 CreateThread(function()
-	while ESX == nil do
-		ESX = exports['es_extended']:getSharedObject()
-		Wait(10)
+    while ESX == nil do
+        ESX = exports['es_extended']:getSharedObject()
+        Wait(10)
     end
     while ESX.GetPlayerData().job == nil do
-		Wait(10)
+        Wait(10)
     end
     if ESX.IsPlayerLoaded() then
-
-		ESX.PlayerData = ESX.GetPlayerData()
-
+        ESX.PlayerData = ESX.GetPlayerData()
     end
 end)
 
 CreateThread(function()
-	while true do
-		local wait = 1000
-		for i = 1, #Config.ShopItem do
-			local v = Config.ShopItem[i]
-			local pPos = GetEntityCoords(PlayerPedId())
+        while true do
+                local wait = 1000
+                for i = 1, #Config.Shops do
+                        local v = Config.Shops[i]
+                        local pPos = GetEntityCoords(PlayerPedId())
 
-			for k in pairs(v.PositonMenu) do
-				local pos = v.PositonMenu
+                        for k in pairs(v.locations) do
+                                local pos = v.locations
 				local dst = Vdist(pos[k].x, pos[k].y, pos[k].z, pPos.x, pPos.y, pPos.z)
 
-				if dst <= v.Marker.Distance and v.MarkesEnable then
-					wait = 0
-					DrawMarker(v.Marker.Type, pos[k].x, pos[k].y, pos[k].z-0.9, 0.0, 0.0, 0.0, 0.0,0.0,0.0, v.Marker.SizeLargeur, v.Marker.SizeEpaisseur, v.Marker.SizeHauteur, v.Marker.ColorR, v.Marker.ColorG, v.Marker.ColorB, v.Marker.Opacite, v.Marker.Saute, true, p19, v.Marker.Tourne)
+                                if dst <= v.marker.distance and v.marker.enable then
+                                        wait = 0
+                                        DrawMarker(v.marker.type, pos[k].x, pos[k].y, pos[k].z-0.9, 0.0, 0.0, 0.0, 0.0,0.0,0.0, v.marker.size.x, v.marker.size.y, v.marker.size.z, v.marker.color.r, v.marker.color.g, v.marker.color.b, v.marker.color.a, v.marker.bounce, true, p19, v.marker.rotate)
 				end
 
-				if dst <= 1.0 then
-					wait = 0
-					ESX.ShowHelpNotification("~INPUT_CONTEXT~")
-					if IsControlJustPressed(1, 51) then
-						OpenMenuShopItem(v)
-					end
-				end
-			end
-		end
-		Wait(wait)
-	end
+                                if dst <= 1.0 then
+                                        wait = 0
+                                        ESX.ShowHelpNotification("~INPUT_CONTEXT~")
+                                        if IsControlJustPressed(1, 51) then
+                                                OpenMenuShopItem(v)
+                                        end
+                                end
+                        end
+                end
+                Wait(wait)
+        end
 end)
 
 CreateThread(function()
-	for i = 1, #Config.ShopItem do
-		local v = Config.ShopItem[i]
-		if v.PedEnable then
-			local HashPed = GetHashKey(v.Ped.hash)
-			while not HasModelLoaded(HashPed) do
-			RequestModel(HashPed)
-			Wait(20)
-			end
+        for i = 1, #Config.Shops do
+                local v = Config.Shops[i]
+                if v.ped.enable then
+                        local HashPed = GetHashKey(v.ped.model)
+                        while not HasModelLoaded(HashPed) do
+                        RequestModel(HashPed)
+                        Wait(20)
+                        end
 
-			Ped = CreatePed("PED_TYPE_CIVMALE", HashPed, v.Ped.pos.x, v.Ped.pos.y, v.Ped.pos.z - 1, false, true)
-			SetBlockingOfNonTemporaryEvents(Ped, true)
-			FreezeEntityPosition(Ped, true)
-			SetEntityInvincible(Ped, true)
-			SetEntityHeading(Ped, v.Ped.pos.w)
-			
-		end
+                        Ped = CreatePed("PED_TYPE_CIVMALE", HashPed, v.ped.coords.x, v.ped.coords.y, v.ped.coords.z - 1, false, true)
+                        SetBlockingOfNonTemporaryEvents(Ped, true)
+                        FreezeEntityPosition(Ped, true)
+                        SetEntityInvincible(Ped, true)
+                        SetEntityHeading(Ped, v.ped.coords.w)
 
-		if v.BlipsEnable then
+                end
 
-			local blip = AddBlipForCoord(v.Blips.pos)
+                if v.blip.enable then
 
-			SetBlipSprite(blip, v.Blips.Id)
-			SetBlipScale (blip, v.Blips.Taille)
-			SetBlipColour(blip, v.Blips.Color)
-			SetBlipAsShortRange(blip, v.Blips.Range)
-			BeginTextCommandSetBlipName('STRING')
-			AddTextComponentSubstringPlayerName(v.Blips.Name)
-			EndTextCommandSetBlipName(blip)
-			
-		end
-	end
+                        local blip = AddBlipForCoord(v.blip.coords)
+
+                        SetBlipSprite(blip, v.blip.id)
+                        SetBlipScale (blip, v.blip.scale)
+                        SetBlipColour(blip, v.blip.color)
+                        SetBlipAsShortRange(blip, v.blip.range)
+                        BeginTextCommandSetBlipName('STRING')
+                        AddTextComponentSubstringPlayerName(v.blip.name)
+                        EndTextCommandSetBlipName(blip)
+
+                end
+        end
 end)
