@@ -1,35 +1,34 @@
 fx_version 'cerulean'
-games { 'gta5' };
-lua54'yes
+games { 'gta5' }
+lua54 'yes'
 
-Author "cmdscripts"
+author 'cmdscripts'
 name 'cmd-shops'
-version "1.0"
+version '1.0'
 
 shared_scripts {
-    "config.lua",
+    '@ox_lib/init.lua',
+    'config.lua',
 }
 
 client_scripts {
-    "source/RageUI/RMenu.lua",
-    "source/RageUI/menu/RageUI.lua",
-    "source/RageUI/menu/Menu.lua",
-    "source/RageUI/menu/MenuController.lua",
-    "source/RageUI/components/*.lua",
-    "source/RageUI/menu/elements/*.lua",
-    "source/RageUI/menu/items/*.lua",
-    "source/RageUI/menu/panels/*.lua",
-    "source/RageUI/menu/windows/*.lua",
-}
-
-client_scripts {
-    "@es_extended/locale.lua",
-    "source/client.lua",
-    "source/functions.lua",
+    'source/RageUI/RMenu.lua',
+    'source/RageUI/menu/RageUI.lua',
+    'source/RageUI/menu/Menu.lua',
+    'source/RageUI/menu/MenuController.lua',
+    'source/RageUI/components/*.lua',
+    'source/RageUI/menu/elements/*.lua',
+    'source/RageUI/menu/items/*.lua',
+    'source/RageUI/menu/panels/*.lua',
+    'source/RageUI/menu/windows/*.lua',
+    '@es_extended/locale.lua',
+    'source/client.lua',
+    'source/functions.lua',
 }
 
 server_scripts {
-    "@mysql-async/lib/MySQL.lua",
-    "@es_extended/locale.lua",
-    "source/server.lua",
+    '@mysql-async/lib/MySQL.lua',
+    '@es_extended/locale.lua',
+    'source/server.lua',
 }
+
